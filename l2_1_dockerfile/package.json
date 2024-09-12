@@ -1,0 +1,17 @@
+{
+  "name": "l2_1_dockerfile",
+  "version": "1.0.0",
+  "description": "A Hellow World App using Docker as part of a Training Course",
+  "author": "",
+  "license": "ISC",
+  "main": "server.js",
+  "scripts": {
+     "start": "node server.js"
+  },
+  "keywords": [],
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+
+
+}

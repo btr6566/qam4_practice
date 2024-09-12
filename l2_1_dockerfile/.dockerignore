@@ -1,0 +1,4 @@
+# RUN npm install will create these
+
+node_modules
+npm-debug.log
