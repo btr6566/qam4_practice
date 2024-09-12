@@ -1,2 +1,5 @@
 l2_1_dockerfile/node_modules
 node_with_mysql_docker/node_modules
+l3_docker_networking/order-service/node_modules
+l3_docker_networking/product-service/node_modules
+l3_docker_networking/user-service/node_modules
