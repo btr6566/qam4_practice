@@ -1,0 +1,68 @@
+
+# Services tag defines what will be set up (so a `web` service and a `mongo` service)
+services:
+  web:
+    build: .   #This specifies that Docker should build the web application from the current directory (.) where the Dockerfile is located.
+    ports:
+      - "3000:3000" 
+      #This maps the port 3000 on the host (your machine) to port 3000 inside the container. Access via http://localhost:3000.
+    
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    #- .:/usr/src/app: This maps the current directory (.) on the host machine to /usr/src/app inside the container. 
+    # This allows you to develop locally, and the changes will be reflected inside the container in real-time.
+
+    #- /usr/src/app/node_modules: This ensures that the node_modules directory inside the container isn't overwritten by the local filesystem.
+    # It keeps node_modules managed within the container.
+
+    depends_on:
+      - mongo
+    # This specifies that the web service depends on the mongo service, meaning the MongoDB container will start before the web application.
+
+    environment:
+      - TEST=true
+      - PORT=3000
+      - MONGO_URL=mongodb://mongo:27017/testdb
+
+  mongo:
+    image: mongo:latest # This pulls the latest MongoDB image from Docker Hub to create the MongoDB container.
+    ports:
+      - "27017:27017" 
+      #This maps the default MongoDB port 27017 on the host to the MongoDB port 27017 in the container. 
+      #This allows external applications or tools (such as MongoDB clients) to connect to the database on localhost:27017.
+    volumes:
+      - mongo-data:/data/db
+      #This maps a named Docker volume called mongo-data to /data/db inside the MongoDB container. 
+      #The database data will persist across container restarts.
+
+#The volumes section defines named volumes that are shared between the host and the container, or between different containers.
+volumes:
+  mongo-data:
+  # This defines the named volume mongo-data used to store MongoDB's data in a persistent way.
+  # Even if the container is removed, the data will be preserved.
+
+###############
+# No comments
+###############
+
+#services:
+#  web:
+#    build: .
+#    ports:
+#      - "3000:3000"
+#    volumes:
+#      - .:/usr/src/app
+#      - /usr/src/app/node_modules
+#    depends_on:
+#      - mongo
+#
+#  mongo:
+#    image: mongo:latest
+#    ports:
+#      - "27017:27017"
+#    volumes:
+#      - mongo-data:/data/db
+#
+#volumes:
+#  mongo-data:

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updated Static Web App with MongoDB</title>
+    <script>
+        async function fetchItems() {
+
+            const response = await fetch('/api/items');
+            const items = await response.json();
+            const itemsList = document.getElementById('items-list');
+
+            itemsList.innerHTML = '';
+
+            items.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.name}:${item.message}`;
+                itemsList.appendChild(listItem);
+            });
+        }
+
+        async function addItem(event) {
+
+            event.preventDefault();
+
+            const itemName = document.getElementById('item-name').value;
+            const itemMessage = document.getElementById('item-message').value;
+            let data = JSON.stringify({ name: itemName, message: itemMessage });
+
+            if (itemName) {
+                await fetch('/api/items', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: data
+                });
+                document.getElementById('item-name').value = '';
+                fetchItems();
+            }
+
+        }
+
+        window.onload = function () {
+            fetchItems();
+            document.getElementById('item-form').onsubmit = addItem;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Updated Static Web App with MongoDB</h1>
+    <form id="item-form">
+        Name:<input type="text" id="item-name" placeholder="Enter item name" required><br />
+        Message:<input type="text" id="item-message" placeholder="Enter a message" required><br />
+        <button type="submit">Add Item</button>
+    </form>
+    <h2>Items List</h2>
+    <ul id="items-list"></ul>
+</body>
+
+</html>
